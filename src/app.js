@@ -1,27 +1,19 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const cookieParser = require("cookie-parser");
-const displayRoutes = require("express-routemap");
-const usersRoutes = require("./routes/user.routes");
-const notesRoutes = require("./routes/notes.routes");
-
-const app = express();
+const studentsRoute = require("./routes/students.routes");
 
 const PORT = 5000;
 const DB_HOST = "localhost";
 const DB_PORT = 27017;
-const DB_NAME = "mongoAvanzadoP1";
+const DB_NAME = "admin.Productos";
 
-const MONGO_URL = `mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`;
-
-console.log("🚀 ~ file: app.js:16 ~ MONGO_URL:", MONGO_URL);
+const app = express();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
 const connection = mongoose
-  .connect(MONGO_URL, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`)
   .then((conn) => {
     console.log("🚀 ~ file: app.js:18 ~ CONECTADO!:");
   })
@@ -29,10 +21,6 @@ const connection = mongoose
     console.log("🚀 ~ file: app.js:20 ~ err:", err);
   });
 
-app.use("/api/users/", usersRoutes);
-app.use("/api/notes/", notesRoutes);
+app.use("/api/students", studentsRoute);
 
-app.listen(PORT, () => {
-  displayRoutes(app);
-  console.log(`Listening on ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Listening on ${PORT}`));
