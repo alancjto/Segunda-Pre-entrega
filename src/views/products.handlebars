@@ -1,0 +1,115 @@
+<div style="margin-left: 10px;">
+  <div style="display: flex; flex-direction: row; align-items: center; justify-content: space-between;">
+
+
+    <div style="display: flex; flex-direction: column;">
+      <h1 style="font-size: 50px;">Product List</h1>
+      <p style="font-size: 20px; margin-top: -30px; margin-bottom: 50px;">Welcome, {{userName}}!</p>
+      <p style="font-size: 20px; margin-top: -50px; margin-bottom: 50px; color: gray;">Rol: {{userRol}}</p>
+    </div>
+
+
+    <div style="display: flex; flex-direction: column; ">
+      <form action="/api/v1/session/logout" method="GET">
+      <a href="/api/v1/session/login">
+        <button style="margin: 0 10px;">LOGOUT</button>
+      </a>
+      </form>
+    </div>
+
+  </div>
+  
+
+
+  <form style="display: flex; flex-direction: row; align-items: center; margin: 20px 0;" action="/api/v1/view/products" method="GET">
+
+    <label for="limit">Products per page:</label>
+    <input style="margin-left: 5px;" type="number" id="limit" name="limit" min="1" value={{limit}}>
+    
+    <div>
+      <label style="margin-left: 15px;" for="category">Category:</label>
+      <select style="margin-left: 5px;" id="category" name="category">
+        <option value="{{noCategory}}">Seleccione una opción</option>
+        {{#each categories}}
+          <option value="{{this}}">{{this}}</option>
+        {{/each}}
+      </select>
+    </div>
+
+    <div>
+      <label style="margin-left: 15px;" for="stock">Stock:</label>
+      <select style="margin-left: 5px;" id="stock" name="stock">
+        <option value="null">All</option>
+        <option value="true">In Stock</option>
+        <option value="false">Out of Stock</option>
+      </select>
+    </div>
+
+    <div>
+      <label style="margin-left: 15px;" for="sortOption">Sort by price:</label>
+      <select style="margin-left: 5px;" id="sortOption" name="sortOption">
+        <option value="">Not sorted</option>
+        <option value="-1">Major to minor</option>
+        <option value="1">Minor to major</option>
+      </select>
+    </div>
+
+    <button style="margin-left: 30px;" type="submit">Buscar</button>
+  </form>
+
+  <div style="margin: 50px 0;">
+    {{#each products}}
+      <div style="display: flex; flex-direction: row; margin-top: 30px; font-size: 25px; font-weight: bold;" >
+        <p>{{this.title}}</p>
+        <p style="margin-left: auto; padding-right: 800px;">${{this.price}}</p>
+      </div>
+      <div style="display: flex; flex-direction: row; margin-top: -25px;">
+        <p>{{this.description}}</p>
+        <p style="margin-left: auto; padding-right: 800px;">{{this.stock}} units left</p>
+      </div>
+      <button>Add to Cart</button>
+    {{/each}}
+  </div>
+
+  <div style="display: flex; flex-direction: row; align-items: center">
+    {{#if firstPageExist}}
+      <a href="/api/v1/view/products?limit={{limit}}&page={{firstPage}}&category={{categoryURL}}&stock={{stock}}&sortOption={{sortOption}}">
+        <button style="margin: 0 10px;">first page</button>
+      </a>
+    {{/if}}
+
+    {{#if hasPrevPage}}
+      <a href="/api/v1/view/products?limit={{limit}}&page={{prevPage}}&category={{categoryURL}}&stock={{stock}}&sortOption={{sortOption}}">
+        <button style="margin: 0 10px;">previous page</button>
+      </a>
+    {{/if}}
+
+    {{#each previousPagesNumbers}}
+      <a href="/api/v1/view/products?limit={{@root.limit}}&page={{this}}&category={{@root.categoryURL}}&stock={{@root.stock}}&sortOption={{@root.sortOption}}">
+        <button style="margin: 0 10px;">{{this}}</button>
+      </a>
+    {{/each}}
+
+    <div style="margin: 0 10px;">
+      <p>page {{page}} of {{totalPages}}</p>
+    </div>
+
+    {{#each followingPagesNumbers}}
+      <a href="/api/v1/view/products?limit={{@root.limit}}&page={{this}}&category={{@root.categoryURL}}&stock={{@root.stock}}&sortOption={{@root.sortOption}}">
+        <button style="margin: 0 10px;">{{this}}</button>
+      </a>
+    {{/each}}
+
+    {{#if hasNextPage}}
+      <a href="/api/v1/view/products?limit={{limit}}&page={{nextPage}}&category={{categoryURL}}&stock={{stock}}&sortOption={{sortOption}}">
+        <button style="margin: 0 10px;">next page</button>
+      </a>
+    {{/if}}
+
+    {{#if lastPageExist}}
+      <a href="/api/v1/view/products?limit={{limit}}&page={{lastPage}}&category={{categoryURL}}&stock={{stock}}&sortOption={{sortOption}}">
+        <button style="margin: 0 10px;">last page</button>
+      </a>
+    {{/if}}
+  </div>
+</div>

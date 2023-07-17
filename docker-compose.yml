@@ -1,21 +1,14 @@
-version: "3.0"
+version: '3.0'
 
-# Services to run
 services:
-  mongo: # name of BD service
+  mongo:
     image: mongo
-    container_name: mongo_db
+    container_name: SegundaPreEntrega
     ports:
       - 27017:27017
     volumes:
-      - mongo:/data/configdb
-      - mongo:/data/db
-    restart: always
-
-networks:
-  nodejs-network:
-    name: nodejs-network
-    driver: bridge
+      - SegundaPreEntrega:/data/configdb
+      - SegundaPreEntrega:/data/db
 
 volumes:
-  mongo:
+  SegundaPreEntrega: {}
